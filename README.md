@@ -22,9 +22,9 @@ str.insert(index, other_str)
 
 &#x20;      แบ่งออกเป็น 2 กรณี&#x20;
 
-&#x20;            \- <kbd>index</kbd> เป็น จำนวนเต็มบวก จะเริ่มแทรกจากด้านหน้าของ string&#x20;
+&#x20;            \- <kbd>index</kbd> เป็น **จำนวนเต็มบวก** จะเริ่มแทรกจากด้านหน้าของ string&#x20;
 
-&#x20;            \- <kbd>index</kbd> เป็น จำนวนเต็มลบ : จะนับตำแหน่งถอยหลังจากด้านท้ายของ string&#x20;
+&#x20;            \- <kbd>index</kbd> เป็น **จำนวนเต็มลบ** จะนับตำแหน่งถอยหลังจากด้านท้ายของ string&#x20;
 
 <kbd>other\_str</kbd> คือ ข้อความที่ต้องการจะแทรกเข้าไป&#x20;
 
@@ -62,35 +62,41 @@ Hellowormyld
 
 ## ภาษา C
 
-ภาษา C ไม่มี method insert จึงต้องสร้าง method ในการแทรกข้อความขึ้นเอง
+ภาษา C ไม่มี method insert โดยตรงจึงต้องสร้าง method ในการแทรกข้อความขึ้นเอง
 
 **Example :**
 
 ```c
-#include<stdio.h>
-#include<string.h>
- int main()
-  {
-   char str[100],data;
-   int position,i,length=0;
-   printf("Enter a string:-");
-   scanf("%s",str);
-   printf("Enter a character and position where we would data insert. :-");
-   fflush(stdin);
-   scanf("%c%d",&data,&position);
-   printf("\nBefore inserrtion = %s\n",str);
-   length=strlen(str);
-   for(i=length;i>=position-1;i--)
-    { 
-        str[i]=str[i-1];
-      }
-      str[position-1]=data;
-      str[length+1]='\0';
-   printf("\nAfter inserrtion = %s",str);  return 0;
-  }e
+#include <stdio.h>
+#include <string.h>
+
+void insertString(char *str, const char *insert, int index) {
+    int lenStr = strlen(str);
+    int lenInsert = strlen(insert);
+    
+    memmove(str + index + lenInsert, str + index, lenStr - index + 1);
+
+    memcpy(str + index, insert, lenInsert);
+}
+
+int main() {
+    char str[50] = "Helloworld";
+    char insert[] = "my";
+    int index = 5;
+
+    insertString(str, insert, index);
+    printf("%s\n", str);
+
+    return 0;
+}
+
 ```
 
-O**utput :**
+**Output :**&#x20;
+
+```c
+Hellomyworld
+```
 
 ## ภาษา Java
 
