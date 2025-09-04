@@ -122,6 +122,10 @@ Hellomyworld
 StringBuffer.insert(int Position, String str)
 ```
 
+<kbd>Position</kbd> คือ ตำแหน่งที่ต้องการแทรก
+
+<kbd>str</kbd> คือ ข้อความที่ต้องการแทรก
+
 **Example:**
 
 ```java
