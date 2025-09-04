@@ -62,7 +62,7 @@ Hellowormyld
 
 ## ภาษา C
 
-ภาษา C ไม่มี method insert โดยตรงจึงต้องสร้าง method ในการแทรกข้อความขึ้นเอง
+**ภาษา C ไม่มี method insert() โดยตรงเหมือนกับ Ruby** จึงต้องสร้าง function ในการแทรกข้อความขึ้นเอง
 
 **Syntax**
 
@@ -114,7 +114,7 @@ Hellomyworld
 
 ## ภาษา Java
 
-เนื่องจาก String ในภาษา Java **ไม่สามารถเปลี่ยนค่าได้โดยตรง** จึงต้องใช้method insert() ของ class <kbd>StringBuffer</kbd> ใน Java ซึ่งเป็นคลาสที่ใช้จัดการกับ String ที่สามารถแก้ไขได้โดยไม่จำเป็นต้องสร้าง object ใหม่ทุกครั้ง
+เนื่องจาก String ในภาษา Java **ไม่สามารถเปลี่ยนค่าได้โดยตรง** จึงต้องใช้ method insert() ของ class <kbd>StringBuffer</kbd> ใน Java ซึ่งเป็นคลาสที่ใช้จัดการกับ String ที่สามารถแก้ไขได้โดยไม่จำเป็นต้องสร้าง object ขึ้นใหม่ทุกครั้ง
 
 **Syntax**
 
