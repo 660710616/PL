@@ -119,12 +119,12 @@ Hellomyworld
 **Syntax**
 
 ```java
-StringBuffer.insert(int Position, String str)
+StringBuffer.insert(int Position, String text)
 ```
 
 <kbd>Position</kbd> คือ ตำแหน่งที่ต้องการแทรก
 
-<kbd>str</kbd> คือ ข้อความที่ต้องการแทรก
+<kbd>text</kbd> คือ ข้อความที่ต้องการแทรก
 
 **Example:**
 
