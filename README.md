@@ -70,7 +70,7 @@ Hellowormyld
 void insertString(char *str, const char *insert, int index)
 ```
 
-<kbd>str</kbd> คือ ข้อความเดิมที่เราจะใส่คำลงไป
+<kbd>str</kbd> คือ ข้อความเดิม
 
 <kbd>insert</kbd> คือ ข้อความที่ต้องการแทรก
 
@@ -119,10 +119,12 @@ Hellomyworld
 **Syntax**
 
 ```java
-StringBuffer.insert(int Position, String text)
+str.insert(int index, String text)
 ```
 
-<kbd>Position</kbd> คือ ตำแหน่งที่ต้องการแทรก
+<kbd>str</kbd> คือ ข้อความเดิม
+
+<kbd>index</kbd> คือ ตำแหน่งที่ต้องการแทรก
 
 <kbd>text</kbd> คือ ข้อความที่ต้องการแทรก
 
