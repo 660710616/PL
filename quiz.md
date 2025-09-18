@@ -7,6 +7,9 @@
 * รับอินพุต 1 บรรทัดเป็น String แทรก “-” ระหว่างตัวอักษรในสตริง เช่น "Ruby" -> "R-u-b-y"
 * หากความยาวของ String เท่ากับ 0 หรือ 1 ให้แสดงผลตามเดิม
 
+<details close>
+   <summary><b>Solution Ruby</b></summary>
+    
 ```ruby
 input = gets.chomp
 
@@ -20,9 +23,25 @@ else
   end
   puts input
 end
-
 ```
+Input :
+```ruby
 
+Hellomyworld 
+
+ ```
+Output
+```ruby
+
+H-e-l-l-o-m-y-w-o-r-l-d
+
+ ```        
+</details>
+
+
+<details close>
+   <summary><b>Solution C</b></summary>
+    
 ```c
 #include <stdio.h>
 #include <string.h>
@@ -55,7 +74,23 @@ int main() {
     return 0;
 }
 ```
+Input :
+```c
 
+Hellomyworld 
+
+ ```
+Output
+```c
+
+H-e-l-l-o-m-y-w-o-r-l-d
+
+ ```        
+</details>
+
+<details close>
+   <summary><b>Solution Java</b></summary>
+    
 ```java
 import java.util.Scanner;
 
@@ -78,7 +113,23 @@ public class Main {
 }
 
 ```
+Input :
+```java
 
+Hellomyworld 
+
+ ```
+Output
+```java
+
+H-e-l-l-o-m-y-w-o-r-l-d
+
+ ```        
+</details>
+
+<details close>
+   <summary><b>Solution Python</b></summary>
+    
 ```python
 s = input("Enter a string: ")
 
@@ -90,3 +141,17 @@ else:
     print(s)
 
 ```
+Input :
+```python
+
+Hellomyworld 
+
+ ```
+Output
+```python
+
+H-e-l-l-o-m-y-w-o-r-l-d
+
+ ```        
+</details>
+
