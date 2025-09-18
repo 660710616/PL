@@ -202,12 +202,10 @@ GeeksforGeeks. (2025, July 23). _Insert a variable into a string - Python_. Geek
 
 ***
 
-
+{% file src=".gitbook/assets/660710616_inserting text.pdf" %}
 
 ***
 
 ## Video
 
-https://youtu.be/qx5RMcbo3Xc[^1]
-
-[^1]: Inserting Text into a Ruby String
+[https://youtu.be/qx5RMcbo3Xc](https://youtu.be/qx5RMcbo3Xc)
