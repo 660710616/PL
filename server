@@ -1,0 +1,159 @@
+import java.io.*;
+import java.net.*;
+import java.nio.channels.*;
+import java.util.*;
+
+public class Server {
+    static final int port = 5000;          // สำหรับ Copy I/O
+    static final int portChannel = 6000;   // สำหรับ Zero-Copy
+    static final String serverPath = "C:\\Users\\User\\Desktop\\Zerocopy\\Server\\";
+
+    private ServerSocket serverSocket;
+    private ServerSocketChannel serverChannel;
+
+    public Server() {
+        try {
+            // เปิดพอร์ต copy I/O
+            serverSocket = new ServerSocket(port);
+            // เปิดพอร์ต zerocopy
+            serverChannel = ServerSocketChannel.open();
+            serverChannel.bind(new InetSocketAddress(portChannel));
+
+            System.out.println("Server started...");
+            System.out.println("Listening on port " + port + " (Copy I/O)");
+            System.out.println("Listening on port " + portChannel + " (Zero-Copy)");
+            System.out.println();
+
+            while (true) {
+                // รอรับ connection จาก client
+                Socket clientSocket = serverSocket.accept();
+                SocketChannel clientChannel = serverChannel.accept();
+
+                System.out.println("Connected from " + clientSocket.getInetAddress());
+
+                // สร้าง Thread แยกสำหรับ client แต่ละคน
+                new Thread(() -> handleClient(clientSocket, clientChannel)).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleClient(Socket clientSocket, SocketChannel clientChannel) {
+        try (
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            OutputStream outByte = clientSocket.getOutputStream();
+        ) {
+            String command;
+
+            while ((command = in.readLine()) != null) {
+                if (command.equals("f")) {
+                    sendFileList(out);
+                } else if (command.equals("d")) {
+                    String fileName = in.readLine();
+                    File file = new File(serverPath + fileName);
+
+                    if (!file.exists() || !file.isFile()) {
+                        out.println("String");
+                        out.println("File not found");
+                        continue;
+                    }
+
+                    long fileSize = file.length();
+                    out.println("Long");
+                    out.println(fileSize);
+
+                    String type = in.readLine(); // อ่านประเภทการดาวน์โหลด
+                    if (type.equals("1")) {
+                        copyFile(file, outByte);
+                    } else if (type.equals("2")) {
+                        zeroCopyFile(file, clientChannel);
+                    } else if (type.equals("3")) {
+                        copyFile(file, outByte);
+                        zeroCopyFile(file, clientChannel);
+                    } else {
+                        System.out.println("Unknown type");
+                    }
+
+                } else if (command.equals("ex")) {
+                    System.out.println("Client disconnected.");
+                    break;
+                } else {
+                    out.println("Unknown command");
+                }
+            }
+
+            clientSocket.close();
+            clientChannel.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendFileList(PrintWriter out) {
+        File folder = new File(serverPath);
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isFile()) {
+                    out.println(f.getName());
+                }
+            }
+        }
+        out.println("EOF"); // end of file list
+    }
+
+    // Copy I/O ปกติ
+    private void copyFile(File file, OutputStream outByte) {
+        try (FileInputStream fis = new FileInputStream(file);
+             BufferedInputStream bis = new BufferedInputStream(fis)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            System.out.println("Start sending file (Copy I/O)...");
+            while ((bytesRead = bis.read(buffer)) != -1) {
+                outByte.write(buffer, 0, bytesRead);
+            }
+            outByte.flush();
+            System.out.println("File sent successfully (Copy I/O).");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Zero-Copy (ใช้ FileChannel.transferTo)
+    private void zeroCopyFile(File file, SocketChannel clientChannel) {
+    if (clientChannel == null || !clientChannel.isOpen()) {
+        System.err.println("Client channel is not open.");
+        return;
+    }
+
+    try (FileChannel sourceFile = new FileInputStream(file).getChannel()) {
+        long position = 0;
+        long fileSize = sourceFile.size();
+        long transferred;
+        System.out.println("Start sending file (Zero-Copy)...");
+
+        while (position < fileSize) {
+            transferred = sourceFile.transferTo(position, fileSize - position, clientChannel);
+            if (transferred <= 0) break; // ป้องกัน loop ค้าง
+            position += transferred;
+        }
+
+        if (position == fileSize) {
+            System.out.println("File sent successfully (Zero-Copy).");
+        } else {
+            System.err.println("Warning: Not all bytes transferred. Expected: "
+                    + fileSize + ", Transferred: " + position);
+        }
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+
+    public static void main(String[] args) {
+        new Server();
+    }
+}
